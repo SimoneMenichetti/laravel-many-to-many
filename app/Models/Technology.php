@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Technology extends Model
 {
     use HasFactory;
+
+    // aggiungiamo le fillable
+
+    protected $fillable = ['name', 'slug'];
+
+    // ed inserialo la relazione many to many con il model project
+
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class);
+    }
 }
