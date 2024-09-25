@@ -4,18 +4,28 @@
     <div class="container">
         <h1>{{ $project->name }}</h1>
         <p><strong>Descrizione:</strong> {{ $project->description }}</p>
-        <p><strong>Tipologia:</strong> {{ $project->type ? $project->type->name : 'N/A' }}</p>
+        <p><strong>Tipologia:</strong>
+            @if ($project->type)
+                <span class="badge bg-primary">{{ $project->type->name }}</span>
+            @else
+                <span class="badge bg-danger">N/A</span>
+            @endif
+        </p>
         <p><strong>Technologie:</strong>
             @if ($project->technologies && $project->technologies->isNotEmpty())
-                @foreach ($project->technologies as $technology)
-                    <span>{{ $technology->name }}</span>
-                    @if (!$loop->last)
-                        ,
-                    @endif
-                @endforeach
-            @else
-                N/A
+                <span class="badge bg-success">
+                    @foreach ($project->technologies as $technology)
+                        {{ $technology->name }}
+                        @if (!$loop->last)
+                            ,
+                        @endif
+                    @endforeach
+                @else
+                    <span class="badge bg-success">
+                        N/A
+                    </span>
             @endif
+            </span>
         </p>
 
         <a href="{{ route('admin.projects.index') }}" class="btn btn-secondary">Torna alla lista</a>
