@@ -25,6 +25,9 @@ class UpdateProjectRequest extends FormRequest
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'type_id' => 'required|exists:types,id',
+            // inserisco le validation per  technology
+            'technologies' => 'array',
+            'technologies' => 'required|exists:technologies,id'
         ];
     }
 
@@ -35,6 +38,8 @@ class UpdateProjectRequest extends FormRequest
             'description.required' => 'La descrizione del progetto è obbligatoria.',
             'type_id.required' => 'La tipologia è obbligatoria.',
             'type_id.exists' => 'La tipologia selezionata non esiste.',
+            'technologies.array' => 'Le technologie devono essere valide',
+            'technologies.*.exist' => 'Una o più technologie non sono valide',
         ];
     }
 }

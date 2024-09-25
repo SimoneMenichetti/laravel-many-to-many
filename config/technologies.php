@@ -1,12 +1,30 @@
 <?php
 return [
-    'array_tech' => [
-        'Javascript',
-        'Laravel',
-        'PHP',
-        'Vue.js',
-        'React',
-        'Angular',
-        'Phyton',
+    [
+        'name' => 'Javascript',
     ],
+
+    [
+        'name' => 'Laravel',
+    ],
+    [
+        'name' => 'PHP',
+    ],
+    [
+        'name' => 'Vue.Js',
+    ],
+    [
+        'name' => 'React',
+    ],
+    [
+        'name' => 'Angular',
+    ],
+    [
+        'name' => 'Python',
+    ],
+
+    [
+        'name' => 'Tailwind',
+    ],
+
 ];

@@ -23,12 +23,29 @@
             @include('Admin.partials.aside')
         @endauth
 
-        <div class="content">
-            @yield('content')
-        </div>
+        <div class="container mt-3">
+            <!-- Messaggio di successo -->
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
-    </div>
-    @include('Admin.partials.footer')
+            <!-- Messaggio di errore -->
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            <div class="content">
+                @yield('content')
+            </div>
+
+        </div>
+        @include('Admin.partials.footer')
 
 
 

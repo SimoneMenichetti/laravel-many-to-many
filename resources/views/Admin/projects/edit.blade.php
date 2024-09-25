@@ -4,11 +4,7 @@
     <div class="container">
         <h1>Modifica Progetto</h1>
 
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+
 
         <form action="{{ route('admin.projects.update', $project) }}" method="POST"
             onsubmit="return confirm('Sei sicuro di voler modificare questo progetto?');">
@@ -44,6 +40,23 @@
                 </select>
                 @error('type_id')
                     <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="mb-3">
+                @foreach ($technologies as $technology)
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="technology_{{ $technology->id }}"
+                            name="technologies[]" value="{{ $technology->id }}"
+                            {{ $project->technologies->contains($technology) ? 'checked' : '' }}>
+                        <!-- Se la tecnologia è già associata, segna il checkbox -->
+                        <label class="form-check-label"
+                            for="technology_{{ $technology->id }}">{{ $technology->name }}</label>
+                    </div>
+                @endforeach
+
+                @error('technologies')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
             </div>
 

@@ -12,9 +12,12 @@ class StoreProjectRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'name' => 'required|string|min:3|max:20',
+            'description' => 'required|string|min:3|max:250',
             'type_id' => 'required|exists:types,id',
+            // inserisco le validation per  technology
+            'technologies' => 'array',
+            'technologies' => 'required|exists:technologies,id'
         ];
     }
 
@@ -25,6 +28,8 @@ class StoreProjectRequest extends FormRequest
             'description.required' => 'La descrizione del progetto è obbligatoria.',
             'type_id.required' => 'Selezionare una tipologia è obbligatorio.',
             'type_id.exists' => 'La tipologia selezionata non è valida.',
+            'technologies.array' => 'Le technologie devono essere valide',
+            'technologies.*.exist' => 'Una o più technologie non sono valide',
         ];
     }
 }

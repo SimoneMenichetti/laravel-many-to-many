@@ -16,16 +16,16 @@ class TechnologySeeder extends Seeder
      */
     public function run(): void
     {
-        $technologies = config('technologies.array_tech');
+        $technologies = config('technologies');
 
 
         // inizializzo il foreach
 
         foreach ($technologies as $technologyName) {
-            Technology::create([
-                'name' => $technologyName,
-                'slug' => Helper::generateSlug($technologyName, Technology::class),
-            ]);
+            $technology = new Technology();
+            $technology->name = $technologyName['name'];
+            $technology->slug = Helper::generateSlug($technologyName['name'], Technology::class);
+            $technology->save();
         }
     }
 }

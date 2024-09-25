@@ -9,6 +9,7 @@ use App\Models\Type;
 use App\Http\Requests\StoreProjectRequest;
 use App\Functions\Helper;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Models\Technology;
 use Laravel\Prompts\Progress;
 
 class ProjectController extends Controller
@@ -18,7 +19,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::with('type')->orderBy('id', 'desc')->get();
+        $projects = Project::with('type')->orderBy('id', 'desc')->paginate(10);
         return view('admin.projects.index', compact('projects'));
     }
 
@@ -27,8 +28,11 @@ class ProjectController extends Controller
      */
     public function create()
     {
+        // ottengo tutti i type
         $types = Type::all();
-        return view('Admin.projects.create', compact('types'));
+        // ottengo tutte le technology
+        $technologies = Technology::all();
+        return view('Admin.projects.create', compact('types', 'technologies'));
     }
 
     /**
@@ -37,10 +41,16 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request)
     {
         $validatedData = $request->validated();
-        $validatedData['slug'] = Helper::generateSlug($validatedData['name'], Project::class); // Assicurati di avere la tua funzione Helper
+        $validatedData['slug'] = Helper::generateSlug($validatedData['name'], Project::class);
 
         // Crea il progetto usando i dati validati, incluso lo slug
-        Project::create($validatedData);
+        $project = Project::create($validatedData);
+
+        // associo le tech selezionate
+
+        if (!empty($request->technologies)) {
+            $project->technologies()->attach($request->technologies);
+        }
 
         return redirect()->route('admin.projects.index')->with('success', 'Progetto creato con successo!');
     }
@@ -59,8 +69,11 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
+        // ottengo tutti i type
         $types = Type::all();
-        return view('admin.projects.edit', compact('project', 'types'));
+        // ottengo tutte le technology
+        $technologies = Technology::all();
+        return view('admin.projects.edit', compact('project', 'types', 'technologies'));
     }
 
     /**
@@ -73,6 +86,13 @@ class ProjectController extends Controller
         $validatedData['slug'] = Helper::generateSlug($validatedData['name'], Project::class);
 
         $project->update($validatedData);
+
+        if (!empty($request->technologies)) {
+
+            $project->technologies()->sync($request->technologies);
+        } else {
+            $project->technologies()->detach();
+        }
 
         return redirect()->route('admin.projects.index')->with('success', 'Progetto modificato con successo!');
     }

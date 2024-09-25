@@ -1,17 +1,10 @@
 @extends('layouts.app')
 
-
-
-
 @section('content')
     <div class="container mt-5">
         <h2>Crea Nuovo Progetto</h2>
 
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+
 
         <form action="{{ route('admin.projects.store') }}" method="POST">
             @csrf
@@ -56,6 +49,22 @@
             <div class="mb-3" id="type-description" style="display:none;">
                 <label for="type_description" class="form-label">Descrizione Tipologia</label>
                 <textarea class="form-control" id="type_description" rows="3" readonly></textarea>
+            </div>
+
+            <!-- Selezione delle tecnologie -->
+            <div class="mb-3">
+                <label for="technologies" class="form-label">Tecnologie</label>
+                @foreach ($technologies as $technology)
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="technology_{{ $technology->id }}"
+                            name="technologies[]" value="{{ $technology->id }}">
+                        <label class="form-check-label"
+                            for="technology_{{ $technology->id }}">{{ $technology->name }}</label>
+                    </div>
+                @endforeach
+                @error('technologies')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                @enderror
             </div>
 
             <button type="submit" class="btn btn-primary">Crea Progetto</button>
