@@ -11,7 +11,7 @@ class Technology extends Model
 
     // aggiungiamo le fillable
 
-    protected $fillable = ['name', 'slug'];
+    protected $fillable =  ['name', 'slug', 'description'];
 
     // ed inserialo la relazione many to many con il model project
 

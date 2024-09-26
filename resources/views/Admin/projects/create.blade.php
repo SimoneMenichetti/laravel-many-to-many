@@ -32,8 +32,7 @@
             <!-- Campo per la tipologia -->
             <div class="mb-3">
                 <label for="type_id" class="form-label">Tipologia</label>
-                <select name="type_id" id="type_id" class="form-select @error('type_id') is-invalid @enderror"
-                    onchange="updateTypeDescription()">
+                <select name="type_id" id="type_id" class="form-select @error('type_id') is-invalid @enderror">
                     <option value="">Seleziona una tipologia</option>
                     @foreach ($types as $type)
                         <option value="{{ $type->id }}" data-description="{{ $type->description }}"
@@ -71,24 +70,4 @@
             <a href="{{ route('admin.projects.index') }}" class="btn btn-secondary">Annulla</a>
         </form>
     </div>
-
-    <script>
-        function updateTypeDescription() {
-            const selectElement = document.getElementById('type_id');
-            const descriptionElement = document.getElementById('type-description');
-            const typeDescriptionTextarea = document.getElementById('type_description');
-
-            const selectedOption = selectElement.options[selectElement.selectedIndex];
-
-            // Controlla se è stata selezionata una tipologia
-            if (selectedOption.value) {
-                const description = selectedOption.getAttribute('data-description');
-                typeDescriptionTextarea.value = description;
-                descriptionElement.style.display = 'block';
-            } else {
-                typeDescriptionTextarea.value = '';
-                descriptionElement.style.display = 'none';
-            }
-        }
-    </script>
 @endsection

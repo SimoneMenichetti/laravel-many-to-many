@@ -24,7 +24,7 @@ class PostsRequest extends FormRequest
     }
 
 
-    public function message()
+    public function messages()
     {
         return [
             'title.required' => 'Il titolo è obbligatorio.',

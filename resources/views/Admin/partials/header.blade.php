@@ -17,7 +17,7 @@
                         <div class="dropdown-menu dropdown-menu-right " aria-labelledby="navbarDropdown"
                             aria-labelledby="navbarDropdown">
                             <a class="text-dark" href="{{ route('admin.home') }}">Admin</a>
-                            <a class="text-dark" href="{{ route('logout') }}"
+                            <a class="text-dark" href="#"
                                 onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>
                         </div>
                         <form action="{{ route('logout') }}" id="logout-form" method="POST" class="d-none">
