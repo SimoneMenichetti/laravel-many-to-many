@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('project_technology', function (Blueprint $table) {
             $table->id();
+            $table->string('path_image')->nullable();
+            $table->string('image_original_name')->nullable();
             $table->unsignedBigInteger('project_id');
             $table->unsignedBigInteger('technology_id');
 

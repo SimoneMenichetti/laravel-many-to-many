@@ -11,6 +11,19 @@
                 <span class="badge bg-danger">N/A</span>
             @endif
         </p>
+        <!-- Visualizza l'immagine del progetto se presente -->
+
+        <div class="mb-3">
+            <strong>Immagine:</strong>
+            @if ($project->path_image)
+                <img src="{{ asset('storage/' . $project->path_image) }}" alt="{{ $project->image_original_name }}"
+                    class="project-image">
+            @else
+                N/A
+            @endif
+        </div>
+
+
         <p><strong>Technologie:</strong>
             @if ($project->technologies && $project->technologies->isNotEmpty())
                 <span class="badge bg-success">

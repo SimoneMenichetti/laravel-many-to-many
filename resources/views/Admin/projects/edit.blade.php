@@ -20,13 +20,7 @@
                 @enderror
             </div>
 
-            <div class="mb-3">
-                <label for="description" class="form-label">Descrizione</label>
-                <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description">{{ old('description', $project->description) }}</textarea>
-                @error('description')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
+
 
             <div class="mb-3">
                 <label for="type_id" class="form-label">Tipologia</label>
@@ -42,6 +36,7 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+
 
             <div class="mb-3">
                 @foreach ($technologies as $technology)
@@ -60,7 +55,45 @@
                 @enderror
             </div>
 
+
+            <!-- Campo per il caricamento dell'immagine -->
+            <div class="form-group mb-3">
+                <label for="path_image">Carica Immagine</label>
+                <input type="file" class="form-control" id="path_image" name="path_image" onchange="showPreview(event);">
+            </div>
+
+            <!-- Anteprima dell'immagine caricata -->
+            <div class="mb-3">
+                <img id="image_preview" src="#" alt="Anteprima Immagine" class="image-preview" />
+            </div>
+
             <button type="submit" class="btn btn-primary">Aggiorna Progetto</button>
         </form>
     </div>
 @endsection
+
+<script>
+    // Funzione per mostrare l'anteprima dell'immagine
+    function showPreview(event) {
+
+        // Ottengo il file dall'input
+        const file = event.target.files[0];
+
+        if (file) {
+            // Verifica se è un'immagine
+
+            // Crea un FileReader per leggere il file
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgElement = document.getElementById('image_preview');
+
+                // Imposta la sorgente dell'immagine con il contenuto del file
+                imgElement.src = e.target.result;
+                // Mostra l'immagine
+                imgElement.style.display = 'block';
+            };
+            // readAsDataURL(file)Legge il contenuto del file come URL
+            reader.readAsDataURL(file);
+        }
+    }
+</script>

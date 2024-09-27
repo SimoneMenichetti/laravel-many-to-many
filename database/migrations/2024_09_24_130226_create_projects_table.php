@@ -17,6 +17,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
+            // Aggiungi la colonna per il percorso dell'immagine
+            $table->string('path_image')->nullable();
+
+            // Aggiungi la colonna per il nome originale dell'immagine
+            $table->string('image_original_name')->nullable();
             $table->string('slug')->unique();
             // campo per la chiave
             $table->unsignedBigInteger('type_id')->nullable();

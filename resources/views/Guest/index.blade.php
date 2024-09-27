@@ -12,7 +12,14 @@
     @extends('layouts.Guest')
 
     @section('content')
-        <h1 class="text-danger">Benvenuto nella pagina Guest</h1>
+        <div class="container text-center mt-5">
+            <h1>Benvenuto alla Pagina Guest</h1>
+            <p class="lead">Puoi accedere o registrarti per usufruire delle funzionalità.</p>
+            <div class="mt-4">
+                <a href="{{ route('login') }}" class="btn btn-primary mx-2">Log In</a>
+                <a href="{{ route('register') }}" class="btn btn-success mx-2">Registrati</a>
+            </div>
+        </div>
     @endsection
 
 </body>

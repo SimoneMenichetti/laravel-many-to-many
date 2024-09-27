@@ -10,6 +10,7 @@ use App\Http\Requests\StoreProjectRequest;
 use App\Functions\Helper;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Technology;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Prompts\Progress;
 
 class ProjectController extends Controller
@@ -28,6 +29,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
+
         // ottengo tutti i type
         $types = Type::all();
         // ottengo tutte le technology
@@ -43,24 +45,40 @@ class ProjectController extends Controller
         $validatedData = $request->validated();
         $validatedData['slug'] = Helper::generateSlug($validatedData['name'], Project::class);
 
-        // Crea il progetto usando i dati validati, incluso lo slug
+        // Verifica se è presente un file di immagine e lo gestisce
+        if ($request->hasFile('path_image')) {
+            // Salva l'immagine nella cartella 'uploads'
+            $image_path = Storage::put('uploads', $request->file('path_image'));
+
+            // Ottiene il nome originale dell'immagine
+            $original_name = $request->file('path_image')->getClientOriginalName();
+
+            // Salva i percorsi nel validatedData
+            $validatedData['path_image'] = $image_path;
+            $validatedData['image_original_name'] = $original_name;
+        } else {
+            // Assicurati che sia null se non è presente
+            $validatedData['path_image'] = null;
+            $validatedData['image_original_name'] = null;
+        }
+
+        // Crea il progetto con i dati validati
         $project = Project::create($validatedData);
 
-        // associo le tech selezionate
-
+        // Associa le tecnologie selezionate (se presenti)
         if (!empty($request->technologies)) {
             $project->technologies()->attach($request->technologies);
         }
 
         return redirect()->route('admin.projects.index')->with('success', 'Progetto creato con successo!');
     }
-
     /**
      * Display the specified resource.
      */
     public function show(Project $project)
     {
         $project->load('type');
+        // dd($project);
         return view('admin.projects.show', compact('project'));
     }
 
@@ -85,18 +103,30 @@ class ProjectController extends Controller
         $validatedData = $request->validated();
         $validatedData['slug'] = Helper::generateSlug($validatedData['name'], Project::class);
 
+        if ($request->hasFile('path_image')) {
+            // Elimina l'immagine precedente se presente
+            if ($project->path_image) {
+                Storage::delete($project->path_image);
+            }
+
+            $image_path = Storage::put('uploads', $validatedData['path_image']);
+            $original_name = $request->file('path_image')->getClientOriginalName();
+
+            $validatedData['path_image'] = $image_path;
+            $validatedData['image_original_name'] = $original_name;
+        }
+
         $project->update($validatedData);
 
+        // Aggiorna le tecnologie selezionate
         if (!empty($request->technologies)) {
-
             $project->technologies()->sync($request->technologies);
         } else {
             $project->technologies()->detach();
         }
 
-        return redirect()->route('admin.projects.index')->with('success', 'Progetto modificato con successo!');
+        return redirect()->route('admin.projects.index')->with('success', 'Progetto aggiornato con successo!');
     }
-
     /**
      * Remove the specified resource from storage.
      */

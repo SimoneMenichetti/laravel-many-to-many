@@ -12,6 +12,7 @@
                     <th>ID</th>
                     <th>Nome</th>
                     <th>Tipologia</th>
+                    <th>Image</th>
                     <th>Tecnologie</th>
                     <th>Azioni</th>
                 </tr>
@@ -28,6 +29,15 @@
                                 <span class="badge bg-danger">N/A</span>
                             @endif
                         </td>
+
+                        <td>
+                            @if ($project->path_image)
+                                <img src="{{ asset('storage/' . $project->path_image) }}"
+                                    alt="{{ $project->image_original_name }}" class="image-thumbnail">
+                            @else
+                                N/A
+                            @endif
+                        </td>
                         <td>
                             {{-- inserisco i badge di bootstrap con una condizione se vuoto nessuna tech altrimenti iterando popola con le tech --}}
                             @if ($project->technologies->isEmpty())
@@ -35,7 +45,8 @@
                                         specificata</strong></span>
                             @else
                                 @foreach ($project->technologies as $technology)
-                                    <span class="badge bg-success"><strong text-white>{{ $technology->name }}</strong></span>
+                                    <span class="badge bg-success"><strong
+                                            text-white>{{ $technology->name }}</strong></span>
                                 @endforeach
                             @endif
                         </td>

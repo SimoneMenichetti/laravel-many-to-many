@@ -15,6 +15,7 @@ class StoreProjectRequest extends FormRequest
             'name' => 'required|string|min:3|max:20',
             'description' => 'required|string|min:3|max:250',
             'type_id' => 'required|exists:types,id',
+            'path_image' => 'nullable|file|image|max:2048',
             // inserisco le validation per  technology
             'technologies' => 'array',
             'technologies' => 'required|exists:technologies,id'
