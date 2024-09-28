@@ -18,9 +18,28 @@ class ProjectController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    // inserisco model Request ed inserisco il valore
+    public function index(Request $request)
     {
-        $projects = Project::with('type')->orderBy('id', 'desc')->paginate(10);
+
+        // Valore di ricerca
+        $search = $request->input('search');
+
+        // Inizializzo la query con il caricamento delle relazioni necessarie
+        $projects = Project::with('type');
+
+        // Aggiungo la condizione di ricerca se il valore è presente
+        if (!empty($search)) {
+            $projects->where(function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('id', $search);
+            });
+        }
+
+        // Applico la paginazione alla query
+        $projects = $projects->orderBy('id', 'desc')->paginate(10);
+
+        // Ritorno la vista con i progetti filtrati
         return view('admin.projects.index', compact('projects'));
     }
 

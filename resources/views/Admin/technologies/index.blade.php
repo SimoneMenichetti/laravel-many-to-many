@@ -18,19 +18,19 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Descrizione</th>
-                    <th>Azioni</th>
+                    <th class="align-middle">ID</th>
+                    <th class="align-middle">Nome</th>
+                    <th class="align-middle">Descrizione</th>
+                    <th class="align-middle">Azioni</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($technologies as $technology)
                     <tr>
-                        <td>{{ $technology->id }}</td>
-                        <td>{{ $technology->name }}</td>
-                        <td>{{ $technology->description }}</td>
-                        <td>
+                        <td class="align-middle">{{ $technology->id }}</td>
+                        <td class="align-middle">{{ $technology->name }}</td>
+                        <td class="align-middle">{{ $technology->description }}</td>
+                        <td class="align-middle">
                             <a href="{{ route('admin.technologies.edit', $technology->id) }}"
                                 class="btn btn-warning btn-sm">Modifica</a>
                             <form action="{{ route('admin.technologies.destroy', $technology->id) }}" method="POST"
