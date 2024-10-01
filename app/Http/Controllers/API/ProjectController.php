@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Models\Type;
 
 class ProjectController extends Controller
 {
@@ -15,11 +16,14 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::paginate(20);
+        $projects = Project::with(['type', 'technologies'])->paginate(20);
+
+
 
         $successes = true;
+
         $response = [
-            'successes' => $successes,
+            'successes' =>  $successes,
             'results' => $projects
         ];
 
@@ -29,7 +33,13 @@ class ProjectController extends Controller
 
     public function projectBySlug($slug)
     {
-        $project = Project::where('slug', $slug)->first();
-        dump($project);
+        // Recupera il progetto con le relazioni `type` e `technologies`
+        $project = Project::with(['type', 'technologies'])->where('slug', $slug)->first();
+
+        if (!$project) {
+            return response()->json(['successes' => false, 'message' => 'Project not found'], 404);
+        }
+
+        return response()->json(['successes' => true, 'project' => $project]);
     }
 }
